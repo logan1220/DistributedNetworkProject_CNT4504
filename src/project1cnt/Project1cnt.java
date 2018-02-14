@@ -26,31 +26,31 @@ public class Project1cnt {
 	
     public static void userChoice (String choice) throws IOException {
 		
-		switch (choice){
-                    
-		case"1":
-                        displayOutput("date");
-                        break;
-		case"2":
-			break;
-		case"3":
-                        displayOutput("free -m");
-			break;
-		case"4":
-			break;
-		case"5":	
-			break;
-		case"6":
-			break;
-		case"7":
-                        System.exit(0);
-			break;
-		default:
-			System.out.print("Invalid choice! Enter a number 1-7: ");
-                        
-		}//end switch
+        switch (choice){
+
+        case"1":
+            displayOutput("date");
+            break;
+        case"2":
+            break;
+        case"3":
+            displayOutput("free -m");
+            break;
+        case"4":
+            break;
+        case"5":	
+            break;
+        case"6":
+            break;
+        case"7":
+            System.exit(0);
+            break;
+        default:
+            System.out.print("Invalid choice! Enter a number 1-7: ");
+
+        }//end switch
                 
-	}//end userChoice
+    }//end userChoice
     
     public static void displayOutput(String cmd) throws IOException {
         Process proc = Runtime.getRuntime().exec(cmd);

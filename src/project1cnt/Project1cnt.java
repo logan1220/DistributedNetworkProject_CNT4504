@@ -32,11 +32,13 @@ public class Project1cnt {
             displayOutput("date");
             break;
         case"2":
+            displayOutput("uptime");
             break;
         case"3":
             displayOutput("free -m");
             break;
         case"4":
+            displayOutput("netstat -a");
             break;
         case"5":
             displayOutput("users");

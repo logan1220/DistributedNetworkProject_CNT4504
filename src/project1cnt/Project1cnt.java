@@ -39,11 +39,11 @@ public class Project1cnt {
         case"4":
             break;
         case"5":
-                displayOutput("users");
-                break;
+            displayOutput("users");
+            break;
         case"6":
-                displayOutput("ps -aux | less");
-                break;
+            displayOutput("ps -aux | less");
+            break;
         case"7":
             System.exit(0);
             break;

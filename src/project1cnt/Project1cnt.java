@@ -38,10 +38,12 @@ public class Project1cnt {
             break;
         case"4":
             break;
-        case"5":	
-            break;
+        case"5":
+                displayOutput("users");
+                break;
         case"6":
-            break;
+                displayOutput("ps -aux | less");
+                break;
         case"7":
             System.exit(0);
             break;

@@ -11,12 +11,12 @@ public class Project1cnt {
         	 
         scan = new Scanner(System.in);
         System.out.print("Group 5\n\n");
-        System.out.print("Wesley Tucker | Reggie Jackson | Logan Sirdevan\nChloe Cruz | Madison Gourde | Wafaa Safar\n\n");
+        System.out.print("Wesley Tucker | Reggie Jackson | Logan Sirdevan\nChloe Cruz | Madison Gourde | Wafaa Safar\n");
         
         while(true){
             
             System.out.print("\n1.Host current Date and Time\n2.Host uptime\n3.Host memory use\n4.Host Netstat\n5.Host current users\n6.Host running processes\n7.Quit");
-            System.out.print("\nEnter your choice: ");
+            System.out.print("\nEnter your choice: \n\n");
             String choice = scan.next();
             userChoice(choice);
         
@@ -29,11 +29,12 @@ public class Project1cnt {
 		switch (choice){
                     
 		case"1":
-                    displayOutput("date");
-                    break;
+                        displayOutput("date");
+                        break;
 		case"2":
 			break;
 		case"3":
+                        displayOutput("free -m");
 			break;
 		case"4":
 			break;

@@ -16,6 +16,7 @@ package project1cnt;
 import java.io.*;
 import java.util.Scanner;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 public class Project1cnt {
     public static double startTime;
@@ -26,30 +27,48 @@ public class Project1cnt {
    
     public static void main(String[] args) throws IOException {
         System.out.println("CNT4504: Network Management Application using the Sockets API Project 1");
+        
         System.out.println("Group 5: Wesley Tucker | Logan Sirdevan | Wafaa Safar\n Reggie Jackson | Chloe Cruz | Madison Gourde");
-        if (args.length ==0 ){
-            System.out.println("No specified hostname and port number.");
-            System.exit(0);
+        
+        if (args.length != 2 ) {
+            System.out.println("Usage: java Project1cnt <hostname> <portnumber>");
+            System.exit(1);
         }
-        else if (args.length !=0){
-            displayPrompt();
-        }
-        try (Socket socket= new Socket(args[0], Integer.parseInt(args[1]))){ //creates the socket with the hostname and port number
-            displayPrompt(); 
-        }
-        catch (IOException ioe){ //display IOE error
-            System.err.println(ioe);
-            System.out.println("Error creating socket!");
+        
+        String hostName = args[0];
+        int portNumber = Integer.parseInt(args[1]);
+        
+        try (Socket socket= new Socket(hostName, portNumber);
+                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in))) { 
+            //creates the socket with the hostname and port number
+            String userInput;
+            while((userInput = stdIn.readLine()) != null) {
+                out.println(userInput);
+                
+            }
+            //displayPrompt(); 
+        } catch (UnknownHostException e) { //display host error
+            System.err.println(e);
+            System.out.println("Don't know host");
+            System.exit(2);
+        } catch (IOException e) { //display IOE error
+            System.err.println(e);
+            System.out.println("Error creating socket");
+            System.exit(3);
         }
     }//end of main method
     
     /*
     * This method displays the prompt and waits for the user to pick the command
     */
-    public static void displayPrompt() throws IOException{
+    public static void displayPrompt() throws IOException {
         scan = new Scanner(System.in);
-        Boolean invalid=true;
-        while(invalid=true){
+        
+        Boolean invalid = true;
+        
+        while(invalid=true) {
             System.out.println();
             System.out.println("Connecting to server...");
             System.out.println();
@@ -59,15 +78,15 @@ public class Project1cnt {
             String choice = scan.next();
             int length= choice.length();
             
-            if (choice.isEmpty()){ //if user enters nothing, the program will stop running
+            if (choice.isEmpty()) { //if user enters nothing, the program will stop running
                 System.out.print("Error: No command line argument chosen");
                 System.exit(0);
             }
+            
             if (length == 1){
                 startTime= System.nanoTime(); //starts the timer for how long it takes for the command to run
                 userChoice(choice);
-            }
-            else{ //if user tries to enter a double-digit number
+            } else { //if user tries to enter a double-digit number
                 System.out.println("\nInvalid command line argument choice. Try again!");
                 invalid=true;
             }

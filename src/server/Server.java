@@ -42,6 +42,7 @@ public class Server {
             while((inputLine = in.readLine()) != null) {
                 System.out.println("Recieved message: " + inputLine + " from " + clientSocket.toString());
                 out.println(inputLine);
+                //run command here
             }
         } catch (IOException e) {
             System.out.println("Exception caught when trying to listen on port" +

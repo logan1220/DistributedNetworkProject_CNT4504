@@ -43,12 +43,14 @@ public class Project1cnt {
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in))) { 
             //creates the socket with the hostname and port number
+            
+            displayPrompt();
+            
             String userInput;
             while((userInput = stdIn.readLine()) != null) {
+                //send info to server
                 out.println(userInput);
-                
             }
-            //displayPrompt(); 
         } catch (UnknownHostException e) { //display host error
             System.err.println(e);
             System.out.println("Don't know host");
@@ -68,11 +70,7 @@ public class Project1cnt {
         
         Boolean invalid = true;
         
-        while(invalid=true) {
-            System.out.println();
-            System.out.println("Connecting to server...");
-            System.out.println();
-            System.out.println("Server is accepting a new connection...");
+        while(invalid) {
             System.out.print("\n1.Host current Date and Time\n2.Host uptime\n3.Host memory use\n4.Host Netstat\n5.Host current users\n6.Host running processes\n7.Quit");
             System.out.print("\nEnter your choice: \n\n");
             String choice = scan.next();
@@ -106,7 +104,6 @@ public class Project1cnt {
             finishTime = System.nanoTime(); //calculates the time the program ran for
             totalTime = (finishTime - startTime); //calculates the total by taking the finish time and subtracting the start time from it
             System.out.printf("Time Spent: " + totalTime + " nanoseconds\n"); //prints the total time to the user
-            break;
         case"2":
             displayOutput("uptime");
             break;

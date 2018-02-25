@@ -53,7 +53,7 @@ public class Project1cnt {
                 startTime= System.nanoTime(); //starts the timer for how long it takes for the command to run
                 userChoice(choice);
             }
-            if (length >1) { //if user tries to enter a double-digit number
+            else{ //if user tries to enter a double-digit number
                 System.out.println("\nInvalid command line argument choice. Try again!");
                 valid=true;
             }

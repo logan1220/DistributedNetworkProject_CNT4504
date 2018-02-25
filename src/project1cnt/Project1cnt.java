@@ -1,35 +1,78 @@
+/*
+ * Project 1
+ * CNT 4504- Networks
+ * Professor Sanjay Ahuja
+ * Group 5- Logan Sirdevan, Wesley (Barrett) Tucker, Wafaa Safar, Chloe Cruz, Reggie Jackson, Madison Gourde
+ * Due: Feburary 28, 2018
+ * This is a client-server programming project. This is the client side where a text menu is displayed to the user for information from the server
+including the host current date and time, uptime, memory use, netstat, current users, and running processes. 
+The user enters the server hostname as a command line argument when this client program is started. If no argument is given, 
+the program will print an error and exit. Then the program will enter a loop to display the text manu, prompt the user for a command, test if the command that the user entered is valid, 
+send that command request to the server on the host, get the response back from the server, and display the response to the user. 
+ *The server should print out diagnostic messages about what it is doing. 
+ */
 package project1cnt;
 
 import java.io.*;
 import java.util.Scanner;
+import java.net.Socket;
 
 public class Project1cnt {
-
+    public static double startTime;
+    public static double finishTime;
+    public static double totalTime;
     public static Scanner scan;
    
     public static void main(String[] args) throws IOException {
-        	 
+        System.out.print("CNT4504: Network Management Application using the Sockets API Project 1\n");
+        System.out.print("Group 5: Wesley Tucker | Logan Sirdevan | Wafaa Safar\n Reggie Jackson | Chloe Cruz | Madison Gourde\n");
+        displayPrompt();
+    }//end of main method
+    
+    /*
+    * This method displays the prompt and waits for the user to pick the command
+    */
+    public static void displayPrompt() throws IOException{
         scan = new Scanner(System.in);
-        System.out.print("Group 5\n\n");
-        System.out.print("Wesley Tucker | Reggie Jackson | Logan Sirdevan\nChloe Cruz | Madison Gourde | Wafaa Safar\n");
-        
-        while(true){
-            
+        Boolean valid;
+        while(valid=true){
+            System.out.println();
+            System.out.println("Connecting to server...");
+            System.out.println();
+            System.out.println("Server is accepting a new connection...");
             System.out.print("\n1.Host current Date and Time\n2.Host uptime\n3.Host memory use\n4.Host Netstat\n5.Host current users\n6.Host running processes\n7.Quit");
             System.out.print("\nEnter your choice: \n\n");
             String choice = scan.next();
-            userChoice(choice);
-        
+            int length= choice.length();
+            
+            if (choice.isEmpty()){ //if user enters nothing, the program will stop running
+                System.out.print("Error: No command line argument chosen");
+                System.exit(0);
+            }
+            if (length == 1){
+                startTime= System.nanoTime(); //starts the timer for how long it takes for the command to run
+                userChoice(choice);
+            }
+            if (length >1) { //if user tries to enter a double-digit number
+                System.out.println("\nInvalid command line argument choice. Try again!");
+                valid=true;
+            }
         }//end while loop
-
-    }//end main
-	
+    }//end of displayPrompt method
+    
+    /*
+    * This method takes in the choice of command of the user into the variable 'choice' and performs that command based on the case of the choice
+    */
     public static void userChoice (String choice) throws IOException {
 		
         switch (choice){
 
         case"1":
             displayOutput("date");
+            //display time respoonse to the user
+            finishTime = System.nanoTime(); //calculates the time the program ran for
+            totalTime = (finishTime - startTime); //calculates the total by taking the finish time and subtracting the start time from it
+            System.out.printf("Time Spent: " + "%.2f\n" + totalTime + " seconds"); //prints the total time to the user
             break;
         case"2":
             displayOutput("uptime");
@@ -39,9 +82,13 @@ public class Project1cnt {
             break;
         case"4":
             displayOutput("netstat -a");
+             //display time respoonse to the user
+            finishTime = System.nanoTime(); //calculates the time the program ran for
+            totalTime = (finishTime - startTime); //calculates the total by taking the finish time and subtracting the start time from it
+            System.out.printf("Time Spent: " + "%.2f\n" + totalTime + " seconds"); //prints the total time to the user
             break;
         case"5":
-            displayOutput("users");
+            displayOutput("users"); //or cmd "who" ???
             break;
         case"6":
             displayOutput("ps -aux | less");
@@ -50,11 +97,11 @@ public class Project1cnt {
             System.exit(0);
             break;
         default:
-            System.out.print("Invalid choice! Enter a number 1-7: ");
-
+            //if the user enters the value 0 or anything greater than 7 or any letters
+            System.out.print("\nInvalid choice! Please enter a number 1-7: \n");
         }//end switch
                 
-    }//end userChoice
+    }//end of userChoice method
     
     public static void displayOutput(String cmd) throws IOException {
         Process proc = Runtime.getRuntime().exec(cmd);
@@ -71,6 +118,5 @@ public class Project1cnt {
         while ((s = stdError.readLine()) != null) {
             System.out.println(s);
         }
-    }
-    
-}//end project1cnt
+    }//end of displayOutput method
+}//end of project

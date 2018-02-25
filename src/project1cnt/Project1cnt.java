@@ -21,12 +21,26 @@ public class Project1cnt {
     public static double startTime;
     public static double finishTime;
     public static double totalTime;
+    public static double meanTime;
     public static Scanner scan;
    
     public static void main(String[] args) throws IOException {
-        System.out.print("CNT4504: Network Management Application using the Sockets API Project 1\n");
-        System.out.print("Group 5: Wesley Tucker | Logan Sirdevan | Wafaa Safar\n Reggie Jackson | Chloe Cruz | Madison Gourde\n");
-        displayPrompt();
+        System.out.println("CNT4504: Network Management Application using the Sockets API Project 1");
+        System.out.println("Group 5: Wesley Tucker | Logan Sirdevan | Wafaa Safar\n Reggie Jackson | Chloe Cruz | Madison Gourde");
+        if (args.length ==0 ){
+            System.out.println("No specified hostname and port number.");
+            System.exit(0);
+        }
+        else if (args.length !=0){
+            displayPrompt();
+        }
+        try (Socket socket= new Socket(args[0], Integer.parseInt(args[1]))){ //creates the socket with the hostname and port number
+            displayPrompt(); 
+        }
+        catch (IOException ioe){ //display IOE error
+            System.err.println(ioe);
+            System.out.println("Error creating socket!");
+        }
     }//end of main method
     
     /*
@@ -34,8 +48,8 @@ public class Project1cnt {
     */
     public static void displayPrompt() throws IOException{
         scan = new Scanner(System.in);
-        Boolean valid;
-        while(valid=true){
+        Boolean invalid=true;
+        while(invalid=true){
             System.out.println();
             System.out.println("Connecting to server...");
             System.out.println();
@@ -55,7 +69,7 @@ public class Project1cnt {
             }
             else{ //if user tries to enter a double-digit number
                 System.out.println("\nInvalid command line argument choice. Try again!");
-                valid=true;
+                invalid=true;
             }
         }//end while loop
     }//end of displayPrompt method
@@ -72,7 +86,7 @@ public class Project1cnt {
             //display time respoonse to the user
             finishTime = System.nanoTime(); //calculates the time the program ran for
             totalTime = (finishTime - startTime); //calculates the total by taking the finish time and subtracting the start time from it
-            System.out.printf("Time Spent: " + "%.2f\n" + totalTime + " seconds"); //prints the total time to the user
+            System.out.printf("Time Spent: " + totalTime + " nanoseconds\n"); //prints the total time to the user
             break;
         case"2":
             displayOutput("uptime");

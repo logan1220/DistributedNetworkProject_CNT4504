@@ -144,6 +144,8 @@ public class Project1cnt {
         default:
             //if the user enters the value 0 or anything greater than 7 or any letters
             System.out.print("\nInvalid choice! Please enter a number 1-7: \n");
+            choice = scan.next();
+            userChoice(choice);
         }//end switch
                 
     }//end of userChoice method

@@ -73,6 +73,7 @@ public class Project1cnt {
     * This method displays the prompt and waits for the user to pick the command
     */
     public static void displayPrompt() throws IOException {
+        menuDisplay();
         scan = new Scanner(System.in);
         
         Boolean invalid = true;
@@ -111,11 +112,15 @@ public class Project1cnt {
             finishTime = System.nanoTime(); //calculates the time the program ran for
             totalTime = (finishTime - startTime); //calculates the total by taking the finish time and subtracting the start time from it
             System.out.printf("Time Spent: " + totalTime + " nanoseconds\n"); //prints the total time to the user
+            menuDisplay();
+            break;
         case"2":
             displayOutput("uptime");
+            menuDisplay();
             break;
         case"3":
             displayOutput("free -m");
+            menuDisplay();
             break;
         case"4":
             displayOutput("netstat -a");
@@ -123,12 +128,15 @@ public class Project1cnt {
             finishTime = System.nanoTime(); //calculates the time the program ran for
             totalTime = (finishTime - startTime); //calculates the total by taking the finish time and subtracting the start time from it
             System.out.printf("Time Spent: " + "%.2f\n" + totalTime + " seconds"); //prints the total time to the user
+            menuDisplay();
             break;
         case"5":
             displayOutput("users"); //or cmd "who" ???
+            menuDisplay();
             break;
         case"6":
             displayOutput("ps -aux | less");
+            menuDisplay();
             break;
         case"7":
             System.exit(0);
@@ -156,4 +164,12 @@ public class Project1cnt {
             System.out.println(s);
         }
     }//end of displayOutput method
+
+    public static void menuDisplay() {
+     
+        System.out.print("\n1.Host current Date and Time\n2.Host uptime\n3.Host memory use\n4.Host Netstat\n5.Host current users\n6.Host running processes\n7.Quit");
+        System.out.print("\nEnter your choice: \n\n");
+    
+    }//menuDisplay
+    
 }//end of project

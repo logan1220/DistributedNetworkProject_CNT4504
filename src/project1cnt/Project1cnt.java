@@ -30,10 +30,12 @@ public class Project1cnt {
         
         System.out.println("Group 5: Wesley Tucker | Logan Sirdevan | Wafaa Safar\n Reggie Jackson | Chloe Cruz | Madison Gourde");
         
-        if (args.length != 2 ) {
-            System.out.println("Usage: java Project1cnt <hostname> <portnumber>");
-            System.exit(1);
-        }
+        //if (args.length != 2 ) {
+           // System.out.println("Usage: java Project1cnt <hostname> <portnumber>");
+            //System.exit(1);
+        //4}
+        
+        displayPrompt();
         
         String hostName = args[0];
         int portNumber = Integer.parseInt(args[1]);
@@ -43,8 +45,13 @@ public class Project1cnt {
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in))) { 
             //creates the socket with the hostname and port number
+            boolean yes = true;
             
-            displayPrompt();
+            do{
+            
+                displayPrompt();
+            
+            }while(yes);
             
             String userInput;
             while((userInput = stdIn.readLine()) != null) {

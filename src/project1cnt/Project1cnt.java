@@ -24,39 +24,59 @@ public class Project1cnt {
     public static double totalTime;
     public static double meanTime;
     public static Scanner scan;
+    public static BufferedReader stdIn;
+    
    
     public static void main(String[] args) throws IOException {
+        
+        stdIn = new BufferedReader(new InputStreamReader(System.in));
+
         System.out.println("CNT4504: Network Management Application using the Sockets API Project 1");
         
-        System.out.println("Group 5: Wesley Tucker | Logan Sirdevan | Wafaa Safar\n Reggie Jackson | Chloe Cruz | Madison Gourde");
+        System.out.println("Group 5: Wesley Tucker "
+                + "| Logan Sirdevan "
+                + "| Wafaa Safar |\n "
+                + "Reggie Jackson "
+                + "| Chloe Cruz "
+                + "| Madison Gourde");
         
-        //if (args.length != 2 ) {
-           // System.out.println("Usage: java Project1cnt <hostname> <portnumber>");
-            //System.exit(1);
-        //4}
-        
-        displayPrompt();
+        if (args.length != 2 ) {
+            System.out.println("Usage: java Project1cnt <hostname> <portnumber>");
+            System.exit(1);
+        }
         
         String hostName = args[0];
         int portNumber = Integer.parseInt(args[1]);
         
         try (Socket socket= new Socket(hostName, portNumber);
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in))) { 
+                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));) 
+        {
             //creates the socket with the hostname and port number
             boolean yes = true;
             
-            do{
-            
-                displayPrompt();
-            
-            }while(yes);
-            
-            String userInput;
-            while((userInput = stdIn.readLine()) != null) {
-                //send info to server
-                out.println(userInput);
+            while (true) {
+                String input;
+                String userInput;
+                menuDisplay();
+                
+                while((userInput = stdIn.readLine()) != null) {
+                    //send info to server
+                    String choice = userChoice(userInput);
+                    System.out.println("here1");
+                    if (choice != null) {
+                        out.println(choice);
+                    } else {
+                        break;
+                    }
+                    System.out.println("here2");
+                    while((input = in.readLine()) != null) {
+                        System.out.println(input);
+                        
+                        break;
+                    }
+                    break;
+                }
             }
         } catch (UnknownHostException e) { //display host error
             System.err.println(e);
@@ -64,114 +84,75 @@ public class Project1cnt {
             System.exit(2);
         } catch (IOException e) { //display IOE error
             System.err.println(e);
-            System.out.println("Error creating socket");
+            System.out.println("io error");
             System.exit(3);
         }
     }//end of main method
     
     /*
-    * This method displays the prompt and waits for the user to pick the command
-    */
-    public static void displayPrompt() throws IOException {
-        menuDisplay();
-        scan = new Scanner(System.in);
-        
-        Boolean invalid = true;
-        
-        while(invalid) {
-            System.out.print("\n1.Host current Date and Time\n2.Host uptime\n3.Host memory use\n4.Host Netstat\n5.Host current users\n6.Host running processes\n7.Quit");
-            System.out.print("\nEnter your choice: \n\n");
-            String choice = scan.next();
-            int length= choice.length();
-            
-            if (choice.isEmpty()) { //if user enters nothing, the program will stop running
-                System.out.print("Error: No command line argument chosen");
-                System.exit(0);
-            }
-            
-            if (length == 1){
-                startTime= System.nanoTime(); //starts the timer for how long it takes for the command to run
-                userChoice(choice);
-            } else { //if user tries to enter a double-digit number
-                System.out.println("\nInvalid command line argument choice. Try again!");
-                invalid=true;
-            }
-        }//end while loop
-    }//end of displayPrompt method
-    
-    /*
     * This method takes in the choice of command of the user into the variable 'choice' and performs that command based on the case of the choice
     */
-    public static void userChoice (String choice) throws IOException {
-		
-        switch (choice){
-
-        case"1":
-            displayOutput("date");
-            //display time respoonse to the user
-            finishTime = System.nanoTime(); //calculates the time the program ran for
-            totalTime = (finishTime - startTime); //calculates the total by taking the finish time and subtracting the start time from it
-            System.out.printf("Time Spent: " + totalTime + " nanoseconds\n"); //prints the total time to the user
-            menuDisplay();
-            break;
-        case"2":
-            displayOutput("uptime");
-            menuDisplay();
-            break;
-        case"3":
-            displayOutput("free -m");
-            menuDisplay();
-            break;
-        case"4":
-            displayOutput("netstat -a");
-             //display time respoonse to the user
-            finishTime = System.nanoTime(); //calculates the time the program ran for
-            totalTime = (finishTime - startTime); //calculates the total by taking the finish time and subtracting the start time from it
-            System.out.printf("Time Spent: " + "%.2f\n" + totalTime + " seconds"); //prints the total time to the user
-            menuDisplay();
-            break;
-        case"5":
-            displayOutput("users"); //or cmd "who" ???
-            menuDisplay();
-            break;
-        case"6":
-            displayOutput("ps -aux | less");
-            menuDisplay();
-            break;
-        case"7":
-            System.exit(0);
-            break;
-        default:
-            //if the user enters the value 0 or anything greater than 7 or any letters
-            System.out.print("\nInvalid choice! Please enter a number 1-7: \n");
-            choice = scan.next();
-            userChoice(choice);
+    public static String userChoice(String choice) throws IOException {
+        switch (choice) {
+            case "1":
+                //if date then ask for clients
+                createThreads("date");
+                return "date";
+            case "2":
+                return "uptime";
+            case "3":
+                return "free -m";
+            case "4":
+                 //if netstat then ask for clients
+                createThreads("netstat -a");
+                return "netstat -a";
+            case"5":
+                return "users";
+            case"6":
+                return "ps -aux | less";
+            case"7":
+                System.exit(0);
+                break;
+            default:
+                //if the user enters the value 0 or anything greater than 7 or any letters
+                System.out.print("\nInvalid choice! Please enter a number 1-7: \n");
+                return null;
         }//end switch
+        
+        return "";
                 
     }//end of userChoice method
     
-    public static void displayOutput(String cmd) throws IOException {
-        Process proc = Runtime.getRuntime().exec(cmd);
-        String s = null;
-        BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-        BufferedReader stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
-
-        // read the output from the command
-        while ((s = stdInput.readLine()) != null) {
-                System.out.println(s);
-        }
-
-        // read any errors from the attempted command
-        while ((s = stdError.readLine()) != null) {
-            System.out.println(s);
-        }
-    }//end of displayOutput method
-
     public static void menuDisplay() {
-     
         System.out.print("\n1.Host current Date and Time\n2.Host uptime\n3.Host memory use\n4.Host Netstat\n5.Host current users\n6.Host running processes\n7.Quit");
         System.out.print("\nEnter your choice: \n\n");
-    
     }//menuDisplay
+    
+    public static void createThreads(String cmd) throws IOException {
+        //Scanner input = new Scanner(System.in);
+       
+        System.out.println("How many clients should run this command?");
+        
+        String number = stdIn.readLine();
+        
+        try {
+            int clientAgents = Integer.parseInt(number);
+            
+            for(int i=0; i < clientAgents; i++) {
+                Clients thread = new Clients(cmd);
+                thread.run();
+            }
+            
+            System.out.println(number + " clients ran with a mean response time of " + (totalTime/clientAgents) + " nanoseconds");
+        } catch (NumberFormatException e) {
+            System.out.println("Number not recognized, returning..");
+            return;
+        }
+    }
+    
+    public static void threadTimer(long totalTimeCA) {
+        totalTime += totalTimeCA;
+        System.out.println(totalTimeCA);
+    }
     
 }//end of project

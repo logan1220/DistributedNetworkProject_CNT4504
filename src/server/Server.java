@@ -41,7 +41,7 @@ public class Server {
             
             while((inputLine = in.readLine()) != null) {
                 System.out.println("Recieved message: " + inputLine + " from " + clientSocket.toString());
-                out.println(inputLine);
+                out.println(runCmd(inputLine));
                 //run command here
             }
         } catch (IOException e) {
@@ -49,4 +49,23 @@ public class Server {
                     portNumber + " or listening for a connection.");
         } 
     }
+    
+    public static String runCmd(String cmd) throws IOException {
+        Process proc = Runtime.getRuntime().exec(cmd);
+        String s = null;
+        BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+        BufferedReader stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
+
+        // read the output from the command
+        while ((s = stdInput.readLine()) != null) {
+            return s;
+        }
+
+        // read any errors from the attempted command
+        while ((s = stdError.readLine()) != null) {
+            return s;
+        }
+        
+        return "";
+    }//end of displayOutput method
 }
